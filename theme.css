@@ -1,0 +1,38 @@
+:root {
+    --grad-orange: #f97316;
+    --grad-purple: #a855f7;
+    --grad-main: linear-gradient(135deg, var(--grad-orange) 0%, var(--purple-grad) 100%);
+    --grad-horizontal: linear-gradient(to right, var(--grad-orange), var(--grad-purple));
+}
+
+/* 1. Background khusus halaman Login & Register */
+.auth-wrapper {
+    background: linear-gradient(135deg, #f97316 0%, #a855f7 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 2. Navbar Gradasi */
+.navbar-custom {
+    background: var(--grad-horizontal) !important;
+    border: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* 3. Tombol Aksi Utama (Login/Register/Simpan) */
+.btn-gradient {
+    background: var(--grad-horizontal);
+    color: white;
+    border: none;
+    transition: all 0.3s ease;
+    font-weight: 600;
+}
+
+.btn-gradient:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4);
+    color: white;
+}
