@@ -1,5 +1,6 @@
 <?php
 
+<<<<<<< HEAD
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Support\Facades\Route;
@@ -21,3 +22,10 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 });
+=======
+use Illuminate\Support\Facades\Route;
+
+Route::get('/', function () {
+    return view('welcome');
+});
+>>>>>>> 236de0bb878103940a49f551e06c9c97e16a7e53
