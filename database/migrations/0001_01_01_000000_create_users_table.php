@@ -22,21 +22,13 @@ return new class extends Migration
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
-<<<<<<< HEAD
             $table->string('email', 191)->primary();
-=======
-            $table->string('email')->primary();
->>>>>>> 236de0bb878103940a49f551e06c9c97e16a7e53
             $table->string('token');
             $table->timestamp('created_at')->nullable();
         });
 
         Schema::create('sessions', function (Blueprint $table) {
-<<<<<<< HEAD
             $table->string('id', 191)->primary();
-=======
-            $table->string('id')->primary();
->>>>>>> 236de0bb878103940a49f551e06c9c97e16a7e53
             $table->foreignId('user_id')->nullable()->index();
             $table->string('ip_address', 45)->nullable();
             $table->text('user_agent')->nullable();
