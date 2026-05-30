@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Perpustakaan</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <!-- Use Tailwind CDN for admin area to avoid requiring Vite build in dev/testing -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
         /* custom scrollbar for sidebar */
         .custom-scrollbar::-webkit-scrollbar { width: 6px; }
