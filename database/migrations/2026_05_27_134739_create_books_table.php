@@ -18,10 +18,12 @@ return new class extends Migration
               ->constrained()
               ->cascadeOnDelete();
 
+        $table->string('genre')->nullable();
+
         $table->string('title');
         $table->string('author');
         $table->string('publisher')->nullable();
-        $table->year('publication_year')->nullable();
+        $table->integer('publication_year')->nullable();
         $table->string('isbn')->nullable()->unique();
         $table->text('description')->nullable();
         $table->string('cover')->nullable();
