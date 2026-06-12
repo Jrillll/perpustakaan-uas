@@ -51,6 +51,30 @@
             color: white;
             cursor: pointer;
         }
+        .filter-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-bottom: 1.75rem;
+        }
+        .filter-pill {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1rem;
+            border-radius: 999px;
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            color: #cbd5e1;
+            background: rgba(15, 23, 42, 0.7);
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        .filter-pill:hover,
+        .filter-pill.active {
+            background: rgba(37, 99, 235, 0.95);
+            color: white;
+            border-color: rgba(37, 99, 235, 0.8);
+        }
         .books-grid {
             display: grid;
             gap: 1rem;
@@ -76,13 +100,32 @@
         .book-meta {
             font-size: 0.9rem;
             color: #94a3b8;
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
             line-height: 1.5;
+        }
+        .book-category {
+            font-size: 0.85rem;
+            color: #60a5fa;
+            margin-bottom: 1rem;
         }
         .book-description {
             font-size: 0.9rem;
             color: #cbd5e1;
             min-height: 5rem;
+            margin-bottom: 1.2rem;
+        }
+        .book-detail {
+            display: inline-block;
+            padding: 0.7rem 1rem;
+            border-radius: 0.85rem;
+            background: #2563eb;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+        .book-detail:hover {
+            background: #1e40af;
         }
         .empty-state {
             padding: 3rem;
@@ -124,14 +167,22 @@
         <div class="header">
             <div>
                 <h1 class="title">Jelajah Buku</h1>
+                <p class="subtitle">Temukan buku terbaik berdasarkan genre, penulis, atau penerbit favoritmu.</p>
                 @if (!empty($search))
-                    <p>Hasil pencarian untuk: <strong>{{ $search }}</strong></p>
+                    <p class="search-result">Hasil pencarian untuk: <strong>{{ $search }}</strong></p>
                 @endif
             </div>
             <form class="search-form" action="{{ route('books.index') }}" method="GET">
                 <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari judul, penulis, penerbit, ISBN" autocomplete="off">
                 <button type="submit">Cari</button>
             </form>
+        </div>
+
+        <div class="filter-row">
+            <a href="{{ route('books.index') }}" class="filter-pill {{ empty($category) ? 'active' : '' }}">Semua Genre</a>
+            @foreach ($categories as $cat)
+                <a href="{{ route('books.index', array_merge(request()->query(), ['category' => $cat->name])) }}" class="filter-pill {{ $category === $cat->name ? 'active' : '' }}">{{ $cat->name }}</a>
+            @endforeach
         </div>
 
         @if ($books->isEmpty())
@@ -144,8 +195,9 @@
                     <div class="book-card">
                         <h2 class="book-title">{{ $book->title }}</h2>
                         <p class="book-meta">{{ $book->author }} · {{ $book->publisher ?? 'Penerbit tidak diketahui' }}</p>
-                        <p class="book-meta">Kategori: {{ optional($book->category)->name ?? 'Umum' }}</p>
+                        <p class="book-category">Kategori: {{ optional($book->category)->name ?? 'Umum' }}</p>
                         <p class="book-description">{{ Str::limit($book->description ?? 'Tidak ada deskripsi.', 160) }}</p>
+                        <a href="{{ route('books.show', $book) }}" class="book-detail">Detail</a>
                     </div>
                 @endforeach
             </div>

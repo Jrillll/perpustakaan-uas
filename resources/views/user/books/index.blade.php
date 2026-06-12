@@ -175,7 +175,7 @@
                                         <!-- Cover -->
                                         <div class="w-16 h-24 bg-gray-50 border rounded-lg overflow-hidden flex-shrink-0 shadow-sm">
                                             <img
-                                                src="{{ $recBook->cover }}"
+                                                src="{{ $recBook->cover ? asset('storage/' . $recBook->cover) : 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=' }}"
                                                 alt="{{ $recBook->title }}"
                                                 class="w-full h-full object-cover group-hover:scale-105 transition duration-300"
                                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
@@ -188,7 +188,7 @@
                                         <!-- Details -->
                                         <div class="flex-1 min-w-0">
                                             <span class="inline-block bg-indigo-50 text-[#4f46e5] px-2 py-0.5 rounded-md text-[9px] font-bold mb-1.5 uppercase tracking-wider">
-                                                {{ $recBook->genre ?? 'Umum' }}
+                                                {{ $recBook->category->name ?? 'Umum' }}
                                             </span>
                                             <h3 class="text-[12px] font-bold text-gray-850 truncate group-hover:text-[#4f46e5] transition duration-200 mb-0.5" title="{{ $recBook->title }}">
                                                 {{ $recBook->title }}
@@ -253,7 +253,7 @@
                         <div class="w-20 h-28 bg-gray-100 border rounded overflow-hidden flex-shrink-0">
 
                             <img
-                                src="{{ $book->cover }}"
+                                src="{{ $book->cover ? asset('storage/' . $book->cover) : 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=' }}"
                                 alt="{{ $book->title }}"
                                 class="w-full h-full object-cover"
                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
@@ -275,10 +275,10 @@
                             </h2>
 
                             <!-- GENRE BADGE -->
-                            @if($book->genre)
+                            @if($book->category)
                             <div class="mb-1.5">
                                 <span class="inline-block bg-indigo-50 text-[#4f46e5] px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider">
-                                    {{ $book->genre }}
+                                    {{ $book->category->name ?? 'Umum' }}
                                 </span>
                             </div>
                             @endif

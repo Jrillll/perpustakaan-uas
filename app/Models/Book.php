@@ -36,4 +36,9 @@ class Book extends Model
     {
         return $this->hasMany(Review::class);
     }
+
+    public function getDynamicRatingAttribute()
+    {
+        return round($this->reviews()->avg('rating') ?? 0, 1);
+    }
 }

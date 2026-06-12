@@ -16,39 +16,39 @@ class BorrowingController extends Controller
     }
 
     public function borrow(Request $request, Book $book)
-    {
-        $request->validate([
-            'tanggal_mulai' => 'required|date|after_or_equal:today',
-            'durasi' => 'required|integer|in:1,2,3',
-        ]);
+{
+    $validated = $request->validate([
+        'tanggal_mulai' => 'required|date|after_or_equal:today',
+        'durasi' => 'required|integer|in:1,2,3',
+    ]);
 
-        $userId = Auth::id();
+    $userId = Auth::id();
 
-        // Check if user already has an active borrowing or pending request for this specific book
-        $existing = Borrowing::where('book_id', $book->id)
-            ->where('user_id', $userId)
-            ->whereIn('status', ['pending', 'approved'])
-            ->first();
+    $existing = Borrowing::where('book_id', $book->id)
+        ->where('user_id', $userId)
+        ->whereIn('status', ['pending', 'approved'])
+        ->first();
 
-        if ($existing) {
-            return back()->with('error', 'Kamu sudah mengajukan atau sedang meminjam buku ini!');
-        }
-
-        // Calculate due date (tanggal kembali)
-        $borrowDate = Carbon::parse($request->tanggal_mulai);
-        $dueDate = $borrowDate->copy()->addDays($request->durasi);
-
-        Borrowing::create([
-            'user_id' => $userId,
-            'book_id' => $book->id,
-            'borrow_date' => $borrowDate->toDateString(),
-            'due_date' => $dueDate->toDateString(),
-            'status' => 'pending', // Replaces 'menunggu'
-        ]);
-
-        return redirect()->route('borrowings.index')
-            ->with('success', 'Pengajuan peminjaman berhasil! Menunggu persetujuan admin.');
+    if ($existing) {
+        return back()->with('error', 'Kamu sudah mengajukan atau sedang meminjam buku ini!');
     }
+
+    $borrowDate = Carbon::parse($validated['tanggal_mulai']);
+    $durasi = intval($validated['durasi']);
+
+    $dueDate = $borrowDate->copy()->addDays($durasi);
+
+    Borrowing::create([
+        'user_id' => $userId,
+        'book_id' => $book->id,
+        'borrow_date' => $borrowDate->toDateString(),
+        'due_date' => $dueDate->toDateString(),
+        'status' => 'pending',
+    ]);
+
+    return redirect()->route('borrowings.index')
+        ->with('success', 'Pengajuan peminjaman berhasil! Menunggu persetujuan admin.');
+}
 
     public function index()
     {

@@ -21,7 +21,7 @@
             <p class="text-gray-500 text-sm">Silakan tentukan jadwal pinjam dan durasi peminjaman buku Anda.</p>
         </div>
 
-        <form method="POST" action="{{ route('books.borrow', $book->id) }}" class="space-y-6">
+        <form method="POST" action="{{ route('books.borrow.submit', $book->id) }}" class="space-y-6">
             @csrf
 
             <!-- Buku (Disabled) -->

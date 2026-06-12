@@ -147,21 +147,26 @@
                     <div class="bg-white border border-gray-200 rounded-lg p-4 flex gap-4 hover:shadow-sm transition">
 
                         <!-- COVER -->
-                        <div class="w-20 h-28 bg-gray-100 border rounded overflow-hidden flex-shrink-0">
+<div class="w-20 h-28 bg-gray-100 border rounded overflow-hidden flex-shrink-0">
 
-                            <img
-                                src="{{ $d->book->cover }}"
-                                alt="{{ $d->book->title }}"
-                                class="w-full h-full object-cover"
-                                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-                            >
+    @if($d->book && $d->book->cover)
+        <img
+            src="{{ asset('storage/' . $d->book->cover) }}"
+            alt="{{ $d->book->title }}"
+            class="w-full h-full object-cover"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+        >
 
-                            <!-- FALLBACK -->
-                            <div class="hidden w-full h-full items-center justify-center text-gray-400 text-[10px]">
-                                No Cover
-                            </div>
+        <div class="hidden w-full h-full items-center justify-center text-gray-400 text-[10px]">
+            No Cover
+        </div>
+    @else
+        <div class="w-full h-full flex items-center justify-center text-gray-400 text-[10px]">
+            No Cover
+        </div>
+    @endif
 
-                        </div>
+</div>
 
                         <!-- INFO -->
                         <div class="flex-1">

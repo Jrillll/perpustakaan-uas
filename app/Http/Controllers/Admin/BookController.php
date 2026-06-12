@@ -12,10 +12,13 @@ class BookController extends Controller
 {
     public function index()
     {
-        $categories = Category::orderBy('name')->get();
-        $books = Book::with('category')->latest()->get();
+        $books = Book::with('category')
+            ->latest()
+            ->get();
 
-        return view('admin.books.index', compact('categories', 'books'));
+        $categories = Category::orderBy('name')->get();
+
+        return view('admin.books.index', compact('books', 'categories'));
     }
 
     public function store(Request $request)
@@ -25,11 +28,11 @@ class BookController extends Controller
             'title' => ['required', 'string', 'max:255'],
             'author' => ['required', 'string', 'max:255'],
             'publisher' => ['nullable', 'string', 'max:255'],
-            'publication_year' => ['nullable', 'integer', 'min:1900', 'max:2100'],
+            'publication_year' => ['nullable', 'integer', 'min:1000', 'max:' . date('Y')],
             'isbn' => ['nullable', 'string', 'max:255', 'unique:books,isbn'],
             'description' => ['nullable', 'string'],
             'stock' => ['required', 'integer', 'min:0'],
-            'cover' => ['nullable', 'image', 'max:2048'],
+            'cover' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
         ]);
 
         if ($request->hasFile('cover')) {
@@ -38,7 +41,9 @@ class BookController extends Controller
 
         Book::create($validated);
 
-        return redirect()->route('admin.books.index')->with('success', 'Buku berhasil ditambahkan.');
+        return redirect()
+            ->route('admin.books.index')
+            ->with('success', 'Buku berhasil ditambahkan.');
     }
 
     public function update(Request $request, Book $book)
@@ -48,15 +53,15 @@ class BookController extends Controller
             'title' => ['required', 'string', 'max:255'],
             'author' => ['required', 'string', 'max:255'],
             'publisher' => ['nullable', 'string', 'max:255'],
-            'publication_year' => ['nullable', 'integer', 'min:1900', 'max:2100'],
+            'publication_year' => ['nullable', 'integer', 'min:1000', 'max:' . date('Y')],
             'isbn' => ['nullable', 'string', 'max:255', 'unique:books,isbn,' . $book->id],
             'description' => ['nullable', 'string'],
             'stock' => ['required', 'integer', 'min:0'],
-            'cover' => ['nullable', 'image', 'max:2048'],
+            'cover' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
         ]);
 
         if ($request->hasFile('cover')) {
-            if ($book->cover && Storage::disk('public')->exists($book->cover)) {
+            if ($book->cover) {
                 Storage::disk('public')->delete($book->cover);
             }
 
@@ -65,17 +70,21 @@ class BookController extends Controller
 
         $book->update($validated);
 
-        return redirect()->route('admin.books.index')->with('success', 'Buku berhasil diperbarui.');
+        return redirect()
+            ->route('admin.books.index')
+            ->with('success', 'Buku berhasil diperbarui.');
     }
 
     public function destroy(Book $book)
     {
-        if ($book->cover && Storage::disk('public')->exists($book->cover)) {
+        if ($book->cover) {
             Storage::disk('public')->delete($book->cover);
         }
 
         $book->delete();
 
-        return redirect()->route('admin.books.index')->with('success', 'Buku berhasil dihapus.');
+        return redirect()
+            ->route('admin.books.index')
+            ->with('success', 'Buku berhasil dihapus.');
     }
 }

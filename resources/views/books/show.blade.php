@@ -41,7 +41,7 @@
         <!-- Cover Image -->
         <div class="w-40 h-56 rounded-2xl overflow-hidden bg-gray-100 shadow-md border border-gray-200 flex-shrink-0 mx-auto md:mx-0">
             <img
-                src="{{ $book->cover }}"
+                src="{{ $book->cover ? asset('storage/' . $book->cover) : 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=' }}"
                 alt="{{ $book->title }}"
                 class="w-full h-full object-cover"
                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
