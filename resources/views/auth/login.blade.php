@@ -135,6 +135,47 @@
             box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
         }
 
+        .password-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .password-wrapper input {
+            padding-right: 3.5rem;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 2.3rem;
+            height: 2.3rem;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 9999px;
+            color: #cbd5e1;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0;
+            transition: all 0.2s ease;
+            padding: 0;
+            line-height: 1;
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+        }
+
+        .password-toggle svg {
+            width: 1.2rem;
+            height: 1.2rem;
+        }
+
+        .password-toggle:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.18);
+        }
+
         .field input::placeholder {
             color: #64748b;
         }
@@ -323,7 +364,7 @@
                     @error('email')<p class="error">{{ $message }}</p>@enderror
                 </div>
 
-                <div class="field">
+                <div class="field password-wrapper">
                     <label for="password">Password</label>
                     <input
                         id="password"
@@ -332,6 +373,12 @@
                         placeholder="Masukkan password Anda"
                         required
                     >
+                    <button type="button" class="password-toggle" id="togglePassword" aria-label="Tampilkan atau sembunyikan password">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" id="passwordEyeIcon">
+                            <path d="M1.5 12C3.3 7.2 7.3 4 12 4c4.7 0 8.7 3.2 10.5 8-1.8 4.8-5.8 8-10.5 8C7.3 20 3.3 16.8 1.5 12Z" />
+                            <circle cx="12" cy="12" r="3" />
+                        </svg>
+                    </button>
                     @error('password')<p class="error">{{ $message }}</p>@enderror
                 </div>
 
@@ -353,5 +400,21 @@
             </div>
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const passwordInput = document.getElementById('password');
+            const toggleButton = document.getElementById('togglePassword');
+            const passwordIcon = document.getElementById('passwordEyeIcon');
+
+            const eyeIcon = '<path d="M1.5 12C3.3 7.2 7.3 4 12 4c4.7 0 8.7 3.2 10.5 8-1.8 4.8-5.8 8-10.5 8C7.3 20 3.3 16.8 1.5 12Z" /><circle cx="12" cy="12" r="3" />';
+            const eyeOffIcon = '<path d="M1.5 12C3.3 7.2 7.3 4 12 4c4.7 0 8.7 3.2 10.5 8-1.8 4.8-5.8 8-10.5 8C7.3 20 3.3 16.8 1.5 12Z" /><circle cx="12" cy="12" r="3" /><path d="M4.5 4.5L19.5 19.5" />';
+
+            toggleButton.addEventListener('click', function () {
+                const isPassword = passwordInput.getAttribute('type') === 'password';
+                passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
+                passwordIcon.innerHTML = isPassword ? eyeOffIcon : eyeIcon;
+            });
+        });
+    </script>
 </body>
 </html>

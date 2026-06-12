@@ -11,6 +11,7 @@ class Book extends Model
 
     protected $fillable = [
         'category_id',
+        'genre',
         'title',
         'author',
         'publisher',
@@ -34,5 +35,10 @@ class Book extends Model
     public function reviews()
     {
         return $this->hasMany(Review::class);
+    }
+
+    public function getDynamicRatingAttribute()
+    {
+        return round($this->reviews()->avg('rating') ?? 0, 1);
     }
 }
